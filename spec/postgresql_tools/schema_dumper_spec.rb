@@ -65,5 +65,13 @@ RSpec.describe PostgresqlTools::SchemaDumper do
     it 'does not set search_path' do
       expect(io.read).to_not match(/SET search_path/)
     end
+
+    it 'does not include any comments' do
+      expect(io.read).to_not match(/--/)
+    end
+
+    it 'removes duplicate line breaks' do
+      expect(io.read).to_not match(/\n\n/)
+    end
   end
 end
