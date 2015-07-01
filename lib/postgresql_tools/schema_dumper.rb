@@ -6,7 +6,7 @@ module PostgresqlTools
     end
 
     def dump_to(file)
-      io = IO.popen([
+      dump = IO.popen([
         'pg_dump',
         '--schema', @schema,
         '--schema-only',
@@ -14,8 +14,18 @@ module PostgresqlTools
         '--no-tablespaces',
         '--no-owner',
         '--dbname', @database
-      ])
-      IO.copy_stream(io, file)
+      ]).read
+
+      remove_creation_statements(dump)
+
+      file.write(dump)
+    end
+
+    protected
+
+    def remove_creation_statements(dump)
+      dump.gsub!(/CREATE SCHEMA .*;\n/, '')
+      dump.gsub!(/SET search_path .*;\n/, '')
     end
   end
 end

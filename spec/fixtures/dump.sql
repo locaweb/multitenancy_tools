@@ -13,10 +13,8 @@ SET client_min_messages = warning;
 -- Name: schema1; Type: SCHEMA; Schema: -; Owner: -
 --
 
-CREATE SCHEMA schema1;
 
 
-SET search_path = schema1, pg_catalog;
 
 SET default_with_oids = false;
 

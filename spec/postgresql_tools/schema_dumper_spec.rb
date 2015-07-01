@@ -57,5 +57,13 @@ RSpec.describe PostgresqlTools::SchemaDumper do
     it 'does not include object ownership' do
       expect(io.read).to_not match(/OWNER TO/)
     end
+
+    it 'does not include create schema statements' do
+      expect(io.read).to_not match(/CREATE SCHEMA/)
+    end
+
+    it 'does not set search_path' do
+      expect(io.read).to_not match(/SET search_path/)
+    end
   end
 end
