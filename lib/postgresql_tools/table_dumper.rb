@@ -1,20 +1,22 @@
 module PostgresqlTools
-  class SchemaDumper
+  class TableDumper
     include DumpCleaner
 
-    def initialize(database, schema)
+    def initialize(database, schema, table)
       @database = database
       @schema = schema
+      @table = table
     end
 
     def dump_to(file)
       dump = IO.popen([
         'pg_dump',
-        '--schema', @schema,
-        '--schema-only',
+        '--table', "#{@schema}.#{@table}",
+        '--data-only',
         '--no-privileges',
         '--no-tablespaces',
         '--no-owner',
+        '--inserts',
         '--dbname', @database
       ]).read
 
