@@ -10,10 +10,12 @@ RSpec.describe PostgresqlTools::SchemaDumper do
     DbHelper.connection.create_schema('schema1')
     DbHelper.connection.schema_search_path = 'schema1'
 
-    ActiveRecord::Schema.define(version: 20140407140000) do
-      create_table 'posts', force: true do |t|
-        t.text 'title'
-        t.text 'body'
+    silence_stream(STDOUT) do
+      ActiveRecord::Schema.define(version: 20140407140000) do
+        create_table 'posts', force: true do |t|
+          t.text 'title'
+          t.text 'body'
+        end
       end
     end
   end
