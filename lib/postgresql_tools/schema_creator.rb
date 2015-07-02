@@ -7,7 +7,7 @@ module PostgresqlTools
 
     def from_sql(file)
       original_path = @connection.schema_search_path
-      @connection.create_schema(@schema)
+      @connection.execute("CREATE SCHEMA IF NOT EXISTS #{@schema}")
       @connection.schema_search_path = @schema
       @connection.execute(File.read(file))
     ensure
