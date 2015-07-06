@@ -1,16 +1,15 @@
 module MultitenancyTools
-  module DumpCleaner
-    def remove_creation_statements(dump)
-      dump.gsub!(/CREATE SCHEMA .*;\n/, '')
-      dump.gsub!(/SET search_path .*;\n/, '')
+  class DumpCleaner
+    def initialize(sql)
+      @sql = sql.dup
     end
 
-    def remove_comments(dump)
-      dump.gsub!(/^--(?:.*)\n+/, '')
-    end
-
-    def remove_duplicate_line_breaks(dump)
-      dump.gsub!(/\n+/, "\n")
+    def clean
+      @sql.gsub!(/CREATE SCHEMA .*;\n/, '')
+      @sql.gsub!(/SET search_path .*;\n/, '')
+      @sql.gsub!(/^--(?:.*)\n+/, '')
+      @sql.gsub!(/\n+/, "\n")
+      @sql
     end
   end
 end

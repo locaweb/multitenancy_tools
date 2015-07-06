@@ -1,7 +1,5 @@
 module MultitenancyTools
   class TableDumper
-    include DumpCleaner
-
     def initialize(database, schema, table)
       @database = database
       @schema = schema
@@ -20,11 +18,7 @@ module MultitenancyTools
         '--dbname', @database
       ]).read
 
-      remove_creation_statements(dump)
-      remove_comments(dump)
-      remove_duplicate_line_breaks(dump)
-
-      file.write(dump)
+      file.write(DumpCleaner.new(dump).clean)
     end
   end
 end
