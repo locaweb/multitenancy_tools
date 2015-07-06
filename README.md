@@ -37,7 +37,7 @@ edit `spec/database.yml` with your PostgreSQL database connection details.
 Please note that this database will *be destroyed and recreated* on test
 execution.
 
-You can use `rake test` to run the tests. You can also run `bin/console` for an
+You can use `rake spec` to run the tests. You can also run `bin/console` for an
 interactive prompt that will allow you to experiment.
 
 To install this gem onto your local machine, run `bundle exec rake install`.
