@@ -1,14 +1,14 @@
 require 'spec_helper'
-require 'db_helper'
+require 'support/db'
 require 'tempfile'
 
 RSpec.describe PostgresqlTools::TableDumper do
   before(:all) do
-    DbHelper.create_db
-    DbHelper.connect_to_test_db
+    Db.setup
+    Db.connect
 
-    DbHelper.connection.create_schema('schema1')
-    DbHelper.connection.schema_search_path = 'schema1'
+    Db.connection.create_schema('schema1')
+    Db.connection.schema_search_path = 'schema1'
 
     silence_stream(STDOUT) do
       ActiveRecord::Schema.define(version: 20140407140000) do
@@ -19,18 +19,18 @@ RSpec.describe PostgresqlTools::TableDumper do
       end
     end
 
-    DbHelper.connection.execute(<<-SQL)
+    Db.connection.execute(<<-SQL)
       INSERT INTO posts (title, body)
       VALUES ('foo bar baz', 'post content');
     SQL
   end
 
   after(:all) do
-    DbHelper.drop_db
+    Db.teardown
   end
 
   subject do
-    described_class.new(DbHelper.db_name, 'schema1', 'posts')
+    described_class.new(Db.name, 'schema1', 'posts')
   end
 
   describe '#dump_to' do

@@ -1,23 +1,23 @@
 require 'active_record'
 
-class DbHelper
+class Db
   class << self
     def config
       @config ||= YAML.load_file('spec/database.yml')
     end
 
-    def db_name
+    def name
       config['database']
     end
 
-    def create_db
+    def setup
       connect_to_root
-      connection.create_database(db_name, config)
+      connection.create_database(name, config)
     end
 
-    def drop_db
+    def teardown
       connect_to_root
-      connection.drop_database(db_name)
+      connection.drop_database(name)
     end
 
     def connection
@@ -29,7 +29,7 @@ class DbHelper
         config.merge('database' => 'postgres'))
     end
 
-    def connect_to_test_db
+    def connect
       ActiveRecord::Base.establish_connection(config)
     end
 

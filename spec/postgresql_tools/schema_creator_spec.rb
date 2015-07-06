@@ -1,21 +1,21 @@
 require 'spec_helper'
-require 'db_helper'
+require 'support/db'
 require 'tempfile'
 
 RSpec.describe PostgresqlTools::SchemaCreator do
   before(:all) do
-    DbHelper.create_db
-    DbHelper.connect_to_test_db
+    Db.setup
+    Db.connect
   end
 
   after(:all) do
-    DbHelper.drop_db
+    Db.teardown
   end
 
   let(:schema_name) { 'schema1' }
 
   subject do
-    described_class.new(schema_name, DbHelper.connection)
+    described_class.new(schema_name, Db.connection)
   end
 
   describe '#from_sql' do
@@ -24,16 +24,15 @@ RSpec.describe PostgresqlTools::SchemaCreator do
     end
 
     after do
-      DbHelper.connection
-        .execute("DROP SCHEMA IF EXISTS #{schema_name} CASCADE")
+      Db.connection.execute("DROP SCHEMA IF EXISTS #{schema_name} CASCADE")
     end
 
     it 'executes the sql file' do
-      expect(DbHelper.table_exists?(schema_name, 'posts')).to be true
+      expect(Db.table_exists?(schema_name, 'posts')).to be true
     end
 
     it 'sets connection search path back to its original value' do
-      expect(DbHelper.connection.schema_search_path).to eql('"$user",public')
+      expect(Db.connection.schema_search_path).to eql('"$user",public')
     end
   end
 end
