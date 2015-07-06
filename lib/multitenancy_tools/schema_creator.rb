@@ -1,4 +1,4 @@
-module PostgresqlTools
+module MultitenancyTools
   class SchemaCreator
     def initialize(schema, connection)
       @schema = schema

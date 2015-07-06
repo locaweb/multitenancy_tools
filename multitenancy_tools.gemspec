@@ -1,18 +1,18 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'postgresql_tools/version'
+require 'multitenancy_tools/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'postgresql_tools'
-  spec.version       = PostgresqlTools::VERSION
+  spec.name          = 'multitenancy_tools'
+  spec.version       = MultitenancyTools::VERSION
   spec.authors       = ['Lenon Marcel', 'Rafael Timbó', 'Lucas Nogueira',
                         'Rodolfo Liviero']
   spec.email         = ['lenon.marcel@gmail.com', 'rafaeltimbosoares@gmail.com',
                         'lukspn.27@gmail.com', 'rodolfoliviero@gmail.com']
   spec.summary       = 'Some tools for PostgreSQL schema handling'
   spec.description   = 'Some tools for PostgreSQL schema handling'
-  spec.homepage      = 'https://code.locaweb.com.br/saas/postgresql_tools'
+  spec.homepage      = 'https://code.locaweb.com.br/saas/multitenancy_tools'
   spec.license       = 'MIT'
 
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or

@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'support/db'
 require 'tempfile'
 
-RSpec.describe PostgresqlTools::SchemaCreator do
+RSpec.describe MultitenancyTools::SchemaCreator do
   before(:all) do
     Db.setup
     Db.connect

@@ -1,5 +1,5 @@
 adapter: postgresql
 encoding: unicode
-database: postgresql_tools_test
+database: multitenancy_tools_test
 username: postgres
 password:

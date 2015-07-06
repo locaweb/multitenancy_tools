@@ -1,4 +1,4 @@
-module PostgresqlTools
+module MultitenancyTools
   module DumpCleaner
     def remove_creation_statements(dump)
       dump.gsub!(/CREATE SCHEMA .*;\n/, '')

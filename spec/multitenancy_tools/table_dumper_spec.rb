@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'support/db'
 require 'tempfile'
 
-RSpec.describe PostgresqlTools::SchemaDumper do
+RSpec.describe MultitenancyTools::TableDumper do
   before(:all) do
     Db.setup
     Db.connect
@@ -18,6 +18,11 @@ RSpec.describe PostgresqlTools::SchemaDumper do
         end
       end
     end
+
+    Db.connection.execute(<<-SQL)
+      INSERT INTO posts (title, body)
+      VALUES ('foo bar baz', 'post content');
+    SQL
   end
 
   after(:all) do
@@ -25,7 +30,7 @@ RSpec.describe PostgresqlTools::SchemaDumper do
   end
 
   subject do
-    described_class.new(Db.name, 'schema1')
+    described_class.new(Db.name, 'schema1', 'posts')
   end
 
   describe '#dump_to' do
@@ -37,15 +42,15 @@ RSpec.describe PostgresqlTools::SchemaDumper do
     end
 
     it 'generates a SQL dump of the schema' do
-      expect(io.read).to eql(File.read('spec/fixtures/dump.sql'))
+      expect(io.read).to eql(File.read('spec/fixtures/table_dump.sql'))
     end
 
-    it 'contains create table statements' do
-      expect(io.read).to match(/CREATE TABLE posts/)
+    it 'includes table data' do
+      expect(io.read).to match(/INSERT INTO/)
     end
 
-    it 'does not include table data' do
-      expect(io.read).to_not match(/COPY posts/)
+    it 'does not contain create table statements' do
+      expect(io.read).to_not match(/CREATE TABLE/)
     end
 
     it 'does not dump privileges' do
