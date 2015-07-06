@@ -32,17 +32,5 @@ class Db
     def connect
       ActiveRecord::Base.establish_connection(config)
     end
-
-    def table_exists?(schema, table)
-      result = connection.execute(<<-SQL % [schema, table])
-        SELECT EXISTS (
-          SELECT 1
-          FROM   information_schema.tables
-          WHERE  table_schema = '%s'
-          AND    table_name = '%s'
-        )
-      SQL
-      result.getvalue(0,0) == 't'
-    end
   end
 end

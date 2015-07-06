@@ -28,7 +28,7 @@ RSpec.describe PostgresqlTools::SchemaCreator do
     end
 
     it 'executes the sql file' do
-      expect(Db.table_exists?(schema_name, 'posts')).to be true
+      expect(Db.connection.table_exists?("#{schema_name}.posts")).to be true
     end
 
     it 'sets connection search path back to its original value' do
