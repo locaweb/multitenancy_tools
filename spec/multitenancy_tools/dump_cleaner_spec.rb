@@ -8,6 +8,8 @@ RSpec.describe MultitenancyTools::DumpCleaner do
 
 CREATE SCHEMA foo_bar;
 SET search_path = foo_bar;
+SET statement_timeout = 0;
+SET lock_timeout = 0;
 CREATE TABLE posts (
     id integer NOT NULL,
     title text,
@@ -41,6 +43,14 @@ CREATE TABLE posts (
 
     it 'removes set search_path statements' do
       expect(subject).to_not match(/SET search_path/)
+    end
+
+    it 'removes set statement_timeout' do
+      expect(subject).to_not match(/SET statement_timeout/)
+    end
+
+    it 'removes set lock_timeout' do
+      expect(subject).to_not match(/SET lock_timeout/)
     end
 
     it 'removes comments' do

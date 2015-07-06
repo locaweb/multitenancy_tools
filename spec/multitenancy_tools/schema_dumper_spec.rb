@@ -69,6 +69,14 @@ RSpec.describe MultitenancyTools::SchemaDumper do
         expect(io.read).to_not match(/SET search_path/)
       end
 
+      it 'does not set statement_timeout' do
+        expect(io.read).to_not match(/SET statement_timeout/)
+      end
+
+      it 'does not set lock_timeout' do
+        expect(io.read).to_not match(/SET lock_timeout/)
+      end
+
       it 'does not include any comments' do
         expect(io.read).to_not match(/--/)
       end
