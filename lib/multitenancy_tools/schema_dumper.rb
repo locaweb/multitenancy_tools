@@ -8,7 +8,7 @@ module MultitenancyTools
     end
 
     def dump_to(file)
-      stdout, _, _ = Open3.capture3(
+      stdout, stderr, status = Open3.capture3(
         'pg_dump',
         '--schema', @schema,
         '--schema-only',
@@ -17,6 +17,10 @@ module MultitenancyTools
         '--no-owner',
         '--dbname', @database
       )
+
+      unless status.success?
+        raise PgDumpError.new(stderr)
+      end
 
       file.write(DumpCleaner.new(stdout).clean)
     end
