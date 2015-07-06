@@ -1,3 +1,5 @@
+require 'open3'
+
 module MultitenancyTools
   class TableDumper
     def initialize(database, schema, table)
@@ -7,7 +9,7 @@ module MultitenancyTools
     end
 
     def dump_to(file)
-      dump = IO.popen([
+      stdout, _, _ = Open3.capture3(
         'pg_dump',
         '--table', "#{@schema}.#{@table}",
         '--data-only',
@@ -16,9 +18,9 @@ module MultitenancyTools
         '--no-owner',
         '--inserts',
         '--dbname', @database
-      ]).read
+      )
 
-      file.write(DumpCleaner.new(dump).clean)
+      file.write(DumpCleaner.new(stdout).clean)
     end
   end
 end
