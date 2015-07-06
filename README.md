@@ -28,7 +28,29 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### Dump a schema structure to a SQL file
+
+To create a SQL dump of a PostgreSQL schema structure:
+
+```ruby
+dumper = MultitenancyTools::SchemaDumper.new('database_name', 'schema_name')
+File.open('dump.sql', 'w') do |f|
+  dumper.dump_to(f)
+end
+```
+
+Please note that `pg_dump` must be on your PATH because it is a dependency of
+this class.
+
+### Create a new schema using a SQL template
+
+To create a new PostgreSQL schema using a SQL template, you must pass an
+ActiveRecord connection:
+
+```ruby
+creator = MultitenancyTools::SchemaCreator.new('schema_name', ActiveRecord::Base.connection)
+creator.from_sql('path/to/file.sql')
+```
 
 ## Development
 
