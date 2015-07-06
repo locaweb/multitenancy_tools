@@ -37,7 +37,7 @@ RSpec.describe MultitenancyTools::SchemaDumper do
     end
 
     it 'generates a SQL dump of the schema' do
-      expect(io.read).to eql(File.read('spec/fixtures/dump.sql'))
+      expect(io.read).to eql(File.read('spec/fixtures/schema_dump.sql'))
     end
 
     it 'contains create table statements' do

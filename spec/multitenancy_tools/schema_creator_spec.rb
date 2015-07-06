@@ -20,7 +20,7 @@ RSpec.describe MultitenancyTools::SchemaCreator do
 
   describe '#from_sql' do
     before do
-      subject.from_sql('spec/fixtures/dump.sql')
+      subject.from_sql('spec/fixtures/schema_dump.sql')
     end
 
     after do
