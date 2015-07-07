@@ -1,14 +1,7 @@
 # MultitenancyTools
 
 This gem is a collection of tools that can be used to handle multitenant
-Ruby/Rails apps. It was written for PostgreSQL backends.
-
-With this gem you can:
-
-* Create SQL dumps of PostgreSQL schemas.
-* Create a new PostgreSQL schema using a SQL template.
-
-(More comming soon.)
+Ruby/Rails apps. The currently only supported database is PostgreSQL.
 
 ## Installation
 
@@ -28,23 +21,35 @@ Or install it yourself as:
 
 ## Usage
 
-### Dump a schema structure to a SQL file
+#### How to dump the structure of a schema to a SQL file
 
-To create a SQL dump of a PostgreSQL schema structure:
+You can dump the structure of a PostgreSQL schema using the following code:
 
 ```ruby
-dumper = MultitenancyTools::SchemaDumper.new('database_name', 'schema_name')
-File.open('dump.sql', 'w') do |f|
+File.open('path/to/file.sql', 'w') do |f|
+  dumper = MultitenancyTools::SchemaDumper.new('<database name>', '<schema name>')
   dumper.dump_to(f)
 end
 ```
 
-Please note that `pg_dump` must be on your PATH because it is a dependency of
-this class.
+Please note that `pg_dump` must be on your PATH, otherwise this will fail.
 
-### Create a new schema using a SQL template
+#### How to dump the content of a table to a SQL file
 
-To create a new PostgreSQL schema using a SQL template, you must pass an
+You can dump the content of a table using the following code:
+
+```ruby
+File.open('path/to/file.sql', 'w') do |f|
+  dumper = MultitenancyTools::TableDumper.new('<database name>', '<schema name>', '<table>')
+  dumper.dump_to(f)
+end
+```
+
+Please note that `pg_dump` must be on your PATH, otherwise this will fail.
+
+#### How to create a new schema using SQL as template
+
+To create a new PostgreSQL schema using a SQL template, you need an
 ActiveRecord connection:
 
 ```ruby
@@ -55,9 +60,9 @@ creator.from_sql('path/to/file.sql')
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then,
-edit `spec/database.yml` with your PostgreSQL database connection details.
-Please note that this database will *be destroyed and recreated* on test
-execution.
+edit `spec/database.yml` with your PostgreSQL database connection details (take
+a look at the example in `spec/database.yml.example`). **IMPORTANT:** this
+database will *be destroyed and recreated* on test execution.
 
 You can use `rake spec` to run the tests. You can also run `bin/console` for an
 interactive prompt that will allow you to experiment.
@@ -76,4 +81,3 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/[USERN
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
