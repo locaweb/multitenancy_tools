@@ -1,17 +1,7 @@
 require 'spec_helper'
-require 'support/db'
 require 'tempfile'
 
 RSpec.describe MultitenancyTools::SchemaCreator do
-  before(:all) do
-    Db.setup
-    Db.connect
-  end
-
-  after(:all) do
-    Db.teardown
-  end
-
   let(:schema_name) { 'schema1' }
 
   subject do

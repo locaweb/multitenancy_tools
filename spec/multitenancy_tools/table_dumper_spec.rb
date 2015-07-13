@@ -1,12 +1,8 @@
 require 'spec_helper'
-require 'support/db'
 require 'tempfile'
 
 RSpec.describe MultitenancyTools::TableDumper do
   before(:all) do
-    Db.setup
-    Db.connect
-
     Db.connection.create_schema('schema1')
     Db.connection.schema_search_path = 'schema1'
 
@@ -23,10 +19,6 @@ RSpec.describe MultitenancyTools::TableDumper do
       INSERT INTO posts (title, body)
       VALUES ('foo bar baz', 'post content');
     SQL
-  end
-
-  after(:all) do
-    Db.teardown
   end
 
   subject do

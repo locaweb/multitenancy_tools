@@ -1,12 +1,8 @@
 require 'spec_helper'
-require 'support/db'
 require 'tempfile'
 
 RSpec.describe MultitenancyTools::SchemaDumper do
   before(:all) do
-    Db.setup
-    Db.connect
-
     Db.connection.create_schema('schema1')
     Db.connection.schema_search_path = 'schema1'
 
@@ -18,10 +14,6 @@ RSpec.describe MultitenancyTools::SchemaDumper do
         end
       end
     end
-  end
-
-  after(:all) do
-    Db.teardown
   end
 
   describe '#dump_to' do
