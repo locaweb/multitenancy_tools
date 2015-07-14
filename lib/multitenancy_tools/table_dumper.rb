@@ -24,7 +24,9 @@ module MultitenancyTools
         raise PgDumpError.new(stderr)
       end
 
-      file.write(DumpCleaner.new(stdout).clean)
+      File.open(file, 'w') do |f|
+        f.write DumpCleaner.new(stdout).clean
+      end
     end
   end
 end
