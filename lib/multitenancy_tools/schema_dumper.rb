@@ -26,7 +26,8 @@ module MultitenancyTools
     # Generates a dump an writes it into a file.
     #
     # @param file [String] file path
-    def dump_to(file)
+    # @param mode [String] IO open mode
+    def dump_to(file, mode: 'w')
       stdout, stderr, status = Open3.capture3(
         'pg_dump',
         '--schema', @schema,
@@ -41,7 +42,7 @@ module MultitenancyTools
         raise PgDumpError.new(stderr)
       end
 
-      File.open(file, 'w') do |f|
+      File.open(file, mode) do |f|
         f.write DumpCleaner.new(stdout).clean
       end
     end

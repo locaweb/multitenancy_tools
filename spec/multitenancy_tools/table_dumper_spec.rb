@@ -103,5 +103,12 @@ RSpec.describe MultitenancyTools::TableDumper do
                            /No matching tables were found/)
       end
     end
+
+    context 'changing IO mode' do
+      it 'opens the file using the passed IO mode' do
+        expect(File).to receive(:open).with(kind_of(String), 'a')
+        subject.dump_to('dump.sql', mode: 'a')
+      end
+    end
   end
 end

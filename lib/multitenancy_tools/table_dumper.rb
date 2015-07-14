@@ -8,7 +8,7 @@ module MultitenancyTools
       @table = table
     end
 
-    def dump_to(file)
+    def dump_to(file, mode: 'w')
       stdout, stderr, status = Open3.capture3(
         'pg_dump',
         '--table', "#{@schema}.#{@table}",
@@ -24,7 +24,7 @@ module MultitenancyTools
         raise PgDumpError.new(stderr)
       end
 
-      File.open(file, 'w') do |f|
+      File.open(file, mode) do |f|
         f.write DumpCleaner.new(stdout).clean
       end
     end
