@@ -23,8 +23,10 @@ module MultitenancyTools
       @schema = schema
     end
 
-    # Generates a dump an writes it into a file.
+    # Generates a dump an writes it into a file. Please see {IO.new} for open
+    # modes.
     #
+    # @see http://ruby-doc.org/core-2.2.2/IO.html#method-c-new-label-Open+Mode
     # @param file [String] file path
     # @param mode [String] IO open mode
     def dump_to(file, mode: 'w')
