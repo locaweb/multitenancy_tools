@@ -26,10 +26,8 @@ Or install it yourself as:
 You can dump the structure of a PostgreSQL schema using the following code:
 
 ```ruby
-File.open('path/to/file.sql', 'w') do |f|
-  dumper = MultitenancyTools::SchemaDumper.new('<database name>', '<schema name>')
-  dumper.dump_to(f)
-end
+dumper = MultitenancyTools::SchemaDumper.new('<database name>', '<schema name>')
+dumper.dump_to('path/to/file.sql')
 ```
 
 Please note that `pg_dump` must be on your PATH, otherwise this will fail.
@@ -39,10 +37,8 @@ Please note that `pg_dump` must be on your PATH, otherwise this will fail.
 You can dump the content of a table using the following code:
 
 ```ruby
-File.open('path/to/file.sql', 'w') do |f|
-  dumper = MultitenancyTools::TableDumper.new('<database name>', '<schema name>', '<table>')
-  dumper.dump_to(f)
-end
+dumper = MultitenancyTools::TableDumper.new('<database name>', '<schema name>', '<table>')
+dumper.dump_to('path/to/file.sql')
 ```
 
 Please note that `pg_dump` must be on your PATH, otherwise this will fail.
@@ -54,7 +50,7 @@ ActiveRecord connection:
 
 ```ruby
 creator = MultitenancyTools::SchemaCreator.new('schema_name', ActiveRecord::Base.connection)
-creator.from_sql('path/to/file.sql')
+creator.create_from_file('path/to/file.sql')
 ```
 
 ## Development
