@@ -13,10 +13,8 @@ module MultitenancyTools
   # {SchemaDumper} is suitable to create SQL templates for {SchemaCreator}.
   #
   # @example
-  #   File.open('file.sql', 'w') do |f|
-  #     dumper = MultitenancyTools::SchemaDumper.new('my_db', 'my_schema')
-  #     dumper.dump_to(f)
-  #   end
+  #   dumper = MultitenancyTools::SchemaDumper.new('my_db', 'my_schema')
+  #   dumper.dump_to('path/to/file.sql')
   class SchemaDumper
     # @param database [String] database name
     # @param schema [String] schema name
@@ -25,9 +23,9 @@ module MultitenancyTools
       @schema = schema
     end
 
-    # Generates a dump an writes it into a File.
+    # Generates a dump an writes it into a file.
     #
-    # @param file [File] the File object that will receive the dump
+    # @param file [String] file path
     def dump_to(file)
       stdout, stderr, status = Open3.capture3(
         'pg_dump',
