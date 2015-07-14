@@ -23,19 +23,5 @@ RSpec.describe MultitenancyTools::SchemaCreator do
       subject.create_from_file(sql_path)
       expect(Db.connection.schema_search_path).to eql('"$user",public')
     end
-
-    context 'create_schema is false' do
-      it 'raises an error when schema does not exist' do
-        expect do
-          subject.create_from_file(sql_path, create_schema: false)
-        end.to raise_error(/no schema has been selected to create in/)
-      end
-
-      it 'executes the sql file successfully when the schema exist' do
-        Db.connection.execute("CREATE SCHEMA #{schema_name}")
-        subject.create_from_file(sql_path, create_schema: false)
-        expect(Db.connection.table_exists?("#{schema_name}.posts")).to be true
-      end
-    end
   end
 end

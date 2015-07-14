@@ -5,11 +5,11 @@ module MultitenancyTools
       @connection = connection
     end
 
-    def create_from_file(file, create_schema: true)
+    def create_from_file(file)
       quoted_schema_name = @connection.quote_table_name(@schema)
 
       Tenant.new(@connection, @schema).run do
-        @connection.create_schema(quoted_schema_name) if create_schema
+        @connection.create_schema(quoted_schema_name)
         @connection.execute(File.read(file))
       end
     end
