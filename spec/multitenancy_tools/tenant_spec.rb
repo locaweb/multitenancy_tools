@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe MultitenancyTools::Tenant do
-  subject { described_class.new(Db.connection, 'foobar') }
+  subject { described_class.new('foobar', Db.connection) }
 
   describe '#execute' do
     before do

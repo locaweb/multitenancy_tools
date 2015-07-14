@@ -1,6 +1,6 @@
 module MultitenancyTools
   class Tenant
-    def initialize(connection, schema)
+    def initialize(schema, connection)
       @connection = connection
       @schema = @connection.quote(schema)
     end
