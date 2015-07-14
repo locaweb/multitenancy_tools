@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'tempfile'
 
 RSpec.describe MultitenancyTools::SchemaDumper do
   before(:all) do
@@ -17,64 +16,72 @@ RSpec.describe MultitenancyTools::SchemaDumper do
   end
 
   describe '#dump_to' do
-    let(:io) { StringIO.new }
-
     subject do
       described_class.new(Db.name, 'schema1')
     end
 
+    around do |example|
+      Dir.mktmpdir do |dir|
+        Dir.chdir(dir) do
+          example.run
+        end
+      end
+    end
+
     context 'schema exists' do
       before do
-        subject.dump_to(io)
-        io.rewind
+        subject.dump_to('dump.sql')
       end
 
+      let(:file) { File.read('dump.sql') }
+
       it 'generates a SQL dump of the schema' do
-        expect(io.read).to eql(File.read('spec/fixtures/schema_dump.sql'))
+        dump_file = File.expand_path('../../fixtures/schema_dump.sql', __FILE__)
+        expect(file).to eql(File.read(dump_file))
       end
 
       it 'contains create table statements' do
-        expect(io.read).to match(/CREATE TABLE posts/)
+        expect(file).to match(/CREATE TABLE posts/)
       end
 
       it 'does not include table data' do
-        expect(io.read).to_not match(/COPY posts/)
+        expect(file).to_not match(/COPY posts/)
       end
 
       it 'does not dump privileges' do
-        expect(io.read).to_not match(/GRANT|REVOKE/)
+        expect(file).to_not match(/GRANT|REVOKE/)
       end
 
       it 'does not dump tablespace assignments' do
-        expect(io.read).to_not match(/default_tablespace/)
+        expect(file).to_not match(/default_tablespace/)
       end
 
       it 'does not include object ownership' do
-        expect(io.read).to_not match(/OWNER TO/)
+        expect(file).to_not match(/OWNER TO/)
       end
 
       it 'does not include create schema statements' do
-        expect(io.read).to_not match(/CREATE SCHEMA/)
+        expect(file).to_not match(/CREATE SCHEMA/)
       end
 
       it 'does not set search_path' do
-        expect(io.read).to_not match(/SET search_path/)
+        expect(file).to_not match(/SET search_path/)
       end
 
       it 'does not set statement_timeout' do
-        expect(io.read).to_not match(/SET statement_timeout/)
+        expect(file).to_not match(/SET statement_timeout/)
       end
 
       it 'does not set lock_timeout' do
-        expect(io.read).to_not match(/SET lock_timeout/)
+        expect(file).to_not match(/SET lock_timeout/)
       end
 
       it 'does not include any comments' do
-        expect(io.read).to_not match(/--/)
+        expect(file).to_not match(/--/)
       end
 
       it 'removes duplicate line breaks' do
-        expect(io.read).to_not match(/\n\n/)
+        expect(file).to_not match(/\n\n/)
       end
     end
 
@@ -85,7 +92,7 @@ RSpec.describe MultitenancyTools::SchemaDumper do
 
       it 'raises an error' do
         expect do
-          subject.dump_to(io)
+          subject.dump_to('dump.sql')
         end.to raise_error(MultitenancyTools::PgDumpError,
                            /No matching schemas were found/)
       end
