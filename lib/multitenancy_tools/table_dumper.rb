@@ -45,9 +45,7 @@ module MultitenancyTools
         '--dbname', @database
       )
 
-      unless status.success?
-        raise PgDumpError.new(stderr)
-      end
+      fail(PgDumpError, stderr) unless status.success?
 
       File.open(file, mode) do |f|
         f.write DumpCleaner.new(stdout).clean
