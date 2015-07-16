@@ -1,5 +1,5 @@
 module MultitenancyTools
-  class Tenant
+  class SchemaSwitcher
     def initialize(schema, connection)
       @connection = connection
       @schema = @connection.quote(schema)

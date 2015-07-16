@@ -20,7 +20,7 @@ module MultitenancyTools
     def create_from_file(file)
       quoted_schema_name = @connection.quote_table_name(@schema)
 
-      Tenant.new(@schema, @connection).run do
+      SchemaSwitcher.new(@schema, @connection).run do
         @connection.create_schema(quoted_schema_name)
         @connection.execute(File.read(file))
       end

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe MultitenancyTools::Tenant do
+RSpec.describe MultitenancyTools::SchemaSwitcher do
   subject { described_class.new('foobar', Db.connection) }
 
   describe '#execute' do
