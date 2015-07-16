@@ -2,7 +2,7 @@ require 'open3'
 
 module MultitenancyTools
   # {SchemaDumper} can be used to generate SQL dumps of the structure of a
-  # PostgreSQL schema.
+  # PostgreSQL schema. It requires pg_dump.
   #
   # The generated dump DOES NOT contain:
   # * privilege statements (GRANT/REVOKE)
@@ -12,6 +12,8 @@ module MultitenancyTools
   #
   # {SchemaDumper} is suitable to create SQL templates for {SchemaCreator}.
   #
+  # @see http://www.postgresql.org/docs/9.3/static/app-pgdump.html
+  #      pg_dump
   # @example
   #   dumper = MultitenancyTools::SchemaDumper.new('my_db', 'my_schema')
   #   dumper.dump_to('path/to/file.sql')
@@ -27,6 +29,7 @@ module MultitenancyTools
     # modes.
     #
     # @see http://ruby-doc.org/core-2.2.2/IO.html#method-c-new-label-Open+Mode
+    #      IO Open Modes
     # @param file [String] file path
     # @param mode [String] IO open mode
     def dump_to(file, mode: 'w')
