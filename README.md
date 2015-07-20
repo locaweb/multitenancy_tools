@@ -1,7 +1,8 @@
 # MultitenancyTools
 
 This gem is a collection of tools that can be used to handle multitenant
-Ruby/Rails apps. The currently only supported database is PostgreSQL.
+Ruby/Rails apps. The currently only supported database is PostgreSQL and there
+is no plan to support other databases.
 
 ## Installation
 
@@ -21,35 +22,31 @@ Or install it yourself as:
 
 ## Usage
 
-#### How to dump the structure of a schema to a SQL file
+#### Dumping the structure of a PostgreSQL schema to a SQL file
 
-You can dump the structure of a PostgreSQL schema using the following code:
+Please note that `pg_dump` must be on your `PATH`:
 
 ```ruby
-dumper = MultitenancyTools::SchemaDumper.new('<database name>', '<schema name>')
+dumper = MultitenancyTools::SchemaDumper.new('database name', 'schema name')
 dumper.dump_to('path/to/file.sql')
 ```
 
-Please note that `pg_dump` must be on your PATH, otherwise this will fail.
+#### Dumping the content of a table to a SQL file
 
-#### How to dump the content of a table to a SQL file
-
-You can dump the content of a table using the following code:
+Like `SchemaDumper`, this tool also requires `pg_dump` to be on the `PATH`:
 
 ```ruby
-dumper = MultitenancyTools::TableDumper.new('<database name>', '<schema name>', '<table>')
+dumper = MultitenancyTools::TableDumper.new('database name', 'schema name', 'table name')
 dumper.dump_to('path/to/file.sql')
 ```
 
-Please note that `pg_dump` must be on your PATH, otherwise this will fail.
+#### Creating a new PostgreSQL schema using a SQL file as template
 
-#### How to create a new schema using SQL as template
-
-To create a new PostgreSQL schema using a SQL template, you need an
-ActiveRecord connection:
+After using `SchemaDumper` to create the SQL template, you can use the following
+class to create a new schema using this file as template:
 
 ```ruby
-creator = MultitenancyTools::SchemaCreator.new('schema_name', ActiveRecord::Base.connection)
+creator = MultitenancyTools::SchemaCreator.new('schema name', ActiveRecord::Base.connection)
 creator.create_from_file('path/to/file.sql')
 ```
 
@@ -71,9 +68,10 @@ push git commits and tags, and push the `.gem` file to
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/multitenancy_tools.
-
+Bug reports and pull requests are welcome on GitHub at
+https://github.com/locaweb/multitenancy_tools.
 
 ## License
 
-The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+The gem is available as open source under the terms of the
+[MIT License](http://opensource.org/licenses/MIT).
