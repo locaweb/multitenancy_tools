@@ -26,8 +26,10 @@ RSpec.describe MultitenancyTools::SchemaSwitcher do
     end
 
     it 'sets the search path back to its previous value when an error occurs' do
-      subject.run { fail 'OMG' } rescue
-      expect(Db.connection.schema_search_path).to eql("something")
+      expect do
+        subject.run { fail 'OMG' }
+      end.to raise_error(/OMG/)
+      expect(Db.connection.schema_search_path).to eql('something')
     end
   end
 end
