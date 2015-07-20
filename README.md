@@ -1,5 +1,7 @@
 # MultitenancyTools
 
+[![Build Status][travis-badge]][travis-build]
+
 This gem is a collection of tools that can be used to handle multitenant
 Ruby/Rails apps. The currently only supported database is PostgreSQL and there
 is no plan to support other databases.
@@ -75,3 +77,6 @@ https://github.com/locaweb/multitenancy_tools.
 
 The gem is available as open source under the terms of the
 [MIT License](http://opensource.org/licenses/MIT).
+
+[travis-badge]: https://travis-ci.org/locaweb/multitenancy_tools.svg?branch=master
+[travis-build]: https://travis-ci.org/locaweb/multitenancy_tools
