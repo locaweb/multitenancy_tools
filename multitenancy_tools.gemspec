@@ -10,18 +10,10 @@ Gem::Specification.new do |spec|
                         'Rodolfo Liviero']
   spec.email         = ['lenon.marcel@gmail.com', 'rafaeltimbosoares@gmail.com',
                         'lukspn.27@gmail.com', 'rodolfoliviero@gmail.com']
-  spec.summary       = 'Some tools for PostgreSQL schema handling'
-  spec.description   = 'Some tools for PostgreSQL schema handling'
-  spec.homepage      = 'https://code.locaweb.com.br/saas/multitenancy_tools'
+  spec.summary       = 'A collection of tools for multitenant Ruby/Rails apps'
+  spec.description   = 'A collection of tools for multitenant Ruby/Rails apps'
+  spec.homepage      = 'https://github.com/locaweb/multitenancy_tools'
   spec.license       = 'MIT'
-
-  # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
-  # delete this section to allow pushing this gem to any host.
-  if spec.respond_to?(:metadata)
-    spec.metadata['allowed_push_host'] = 'https://gems.locaweb.com.br'
-  else
-    fail 'RubyGems 2.0 or newer is required to protect against public gem pushes.'
-  end
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = 'exe'
