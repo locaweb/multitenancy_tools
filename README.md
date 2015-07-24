@@ -4,9 +4,11 @@
 [![Code Climate][cc-badge]][cc-details]
 [![Test Coverage][cc-cov-badge]][cc-cov-details]
 
-This gem is a collection of tools that can be used to handle multitenant
+This Ruby gem is a collection of tools that can be used to handle multitenant
 Ruby/Rails apps. The currently only supported database is PostgreSQL and there
 is no plan to support other databases.
+
+The documentation is [available on RubyDoc.info][docs].
 
 ## Installation
 
@@ -26,7 +28,7 @@ Or install it yourself as:
 
 ## Usage
 
-#### Dumping the structure of a PostgreSQL schema to a SQL file
+### Dumping the structure of a PostgreSQL schema to a SQL file
 
 Please note that `pg_dump` must be on your `PATH`:
 
@@ -35,7 +37,7 @@ dumper = MultitenancyTools::SchemaDumper.new('database name', 'schema name')
 dumper.dump_to('path/to/file.sql')
 ```
 
-#### Dumping the content of a table to a SQL file
+### Dumping the content of a table to a SQL file
 
 Like `SchemaDumper`, this tool also requires `pg_dump` to be on the `PATH`:
 
@@ -44,7 +46,7 @@ dumper = MultitenancyTools::TableDumper.new('database name', 'schema name', 'tab
 dumper.dump_to('path/to/file.sql')
 ```
 
-#### Creating a new PostgreSQL schema using a SQL file as template
+### Creating a new PostgreSQL schema using a SQL file as template
 
 After using `SchemaDumper` to create the SQL template, you can use the following
 class to create a new schema using this file as template:
@@ -86,3 +88,4 @@ The gem is available as open source under the terms of the
 [cc-details]: https://codeclimate.com/github/locaweb/multitenancy_tools
 [cc-cov-badge]: https://codeclimate.com/github/locaweb/multitenancy_tools/badges/coverage.svg
 [cc-cov-details]: https://codeclimate.com/github/locaweb/multitenancy_tools/coverage
+[docs]: http://www.rubydoc.info/gems/multitenancy_tools
