@@ -4,7 +4,7 @@ module MultitenancyTools
   class SchemaSwitcher
     # @param schema [String] schema name
     # @param connection [ActiveRecord::ConnectionAdapters::PostgreSQLAdapter] connection adapter
-    def initialize(schema, connection)
+    def initialize(schema, connection = ActiveRecord::Base.connection)
       @connection = connection
       @schema = @connection.quote(schema)
     end
