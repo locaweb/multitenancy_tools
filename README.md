@@ -58,19 +58,25 @@ creator.create_from_file('path/to/file.sql')
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then,
-edit `spec/database.yml` with your PostgreSQL database connection details (take
-a look at the example in `spec/database.yml.example`). **IMPORTANT:** this
-database will *be destroyed and recreated* on test execution.
+After checking out the repo:
 
-You can use `rake spec` to run the tests. You can also run `bin/console` for an
-interactive prompt that will allow you to experiment.
+1. Install dependencies using `bin/setup`.
+2. Create the file `spec/database.yml` and configure it with your PostgreSQL
+database. There is an example on `spec/database.yml.example`. **Important:**
+this database *will be destroyed and recreated* on test execution.
+3. Run specs using `bundle exec rake spec` to make sure that everything is fine.
 
-To install this gem onto your local machine, run `bundle exec rake install`.
-To release a new version, update the version number in `version.rb`, and then
-run `bundle exec rake release`, which will create a git tag for the version,
-push git commits and tags, and push the `.gem` file to
-[rubygems.org](https://rubygems.org).
+You can use `bin/console` to get an interactive prompt that will allow you to
+experiment.
+
+## Releasing a new version
+
+If you are the maintainer of this project:
+
+1. Update the version number in `lib/multitenancy_tools/version.rb`.
+2. Make sure that all tests are green (run `bundle exec rake spec`).
+3. Execute `bundle exec rake release` to create a git tag for the version, push
+git commits and tags, and publish the gem on [RubyGems.org][rubygems].
 
 ## Contributing
 
@@ -89,3 +95,4 @@ The gem is available as open source under the terms of the
 [cc-cov-badge]: https://codeclimate.com/github/locaweb/multitenancy_tools/badges/coverage.svg
 [cc-cov-details]: https://codeclimate.com/github/locaweb/multitenancy_tools/coverage
 [docs]: http://www.rubydoc.info/gems/multitenancy_tools
+[rubygems]: https://rubygems.org/gems/multitenancy_tools
