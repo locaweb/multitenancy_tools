@@ -2,21 +2,16 @@ require 'spec_helper'
 require 'tempfile'
 
 RSpec.describe MultitenancyTools::TableDumper do
-  before(:all) do
-    Db.connection.create_schema('schema1')
-    Db.connection.schema_search_path = 'schema1'
-
-    silence_stream(STDOUT) do
-      ActiveRecord::Schema.define(version: 20140407140000) do
-        create_table 'posts', force: true do |t|
-          t.text 'title'
-          t.text 'body'
-        end
-      end
-    end
-
+  before do
     Db.connection.execute(<<-SQL)
-      INSERT INTO posts (title, body)
+      DROP SCHEMA IF EXISTS schema1 CASCADE;
+      CREATE SCHEMA schema1;
+      CREATE TABLE schema1.posts (
+          id SERIAL NOT NULL PRIMARY KEY,
+          title text,
+          body text
+      );
+      INSERT INTO schema1.posts (title, body)
       VALUES ('foo bar baz', 'post content');
     SQL
   end
