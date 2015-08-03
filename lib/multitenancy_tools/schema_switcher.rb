@@ -13,10 +13,20 @@ module MultitenancyTools
     # yields the block and then change search_path back to its previous value.
     def run(&block)
       original_path = @connection.schema_search_path
-      @connection.schema_search_path = @schema
+      set_path_if_required(@schema)
       yield
     ensure
-      @connection.schema_search_path = original_path
+      set_path_if_required(original_path)
+    end
+
+    protected
+
+    # Change search_path only if the current search_path is different. This
+    # avoids unnecessary queries to change the connection search_path when it
+    # already has the desired value.
+    def set_path_if_required(schema)
+      return if @connection.schema_search_path == schema
+      @connection.schema_search_path = schema
     end
   end
 end
