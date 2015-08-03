@@ -14,6 +14,19 @@ RSpec.describe MultitenancyTools do
     end
   end
 
+  describe '.destroy' do
+    it 'drops the schema from the database' do
+      destroyer = double
+
+      expect(MultitenancyTools::SchemaDestroyer)
+        .to receive(:new)
+        .with('foobar', ActiveRecord::Base.connection) { destroyer }
+      expect(destroyer).to receive(:destroy)
+
+      subject.destroy('foobar')
+    end
+  end
+
   describe '.using' do
     it 'routes all queries to the passed tenant' do
       switcher = double

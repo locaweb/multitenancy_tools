@@ -17,6 +17,14 @@ module MultitenancyTools
     SchemaCreator.new(name, connection).create_from_file(sql_file)
   end
 
+  # Removes a schema from the database.
+  #
+  # @param name [String] schema name
+  # @param connection [ActiveRecord::ConnectionAdapters::PostgreSQLAdapter] connection adapter
+  def self.destroy(name, connection = ActiveRecord::Base.connection)
+    SchemaDestroyer.new(name, connection).destroy
+  end
+
   # Uses the passed schema as the scope for all queries triggered by the block.
   #
   # @param schema [String] schema name
