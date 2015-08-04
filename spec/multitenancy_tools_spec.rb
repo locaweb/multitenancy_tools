@@ -42,4 +42,32 @@ RSpec.describe MultitenancyTools do
       subject.using('foobar', &proc)
     end
   end
+
+  describe '.dump_schema' do
+    it 'generates a dump of the schema' do
+      dumper = double
+
+      expect(MultitenancyTools::SchemaDumper)
+        .to receive(:new)
+        .with('foo', 'bar') { dumper }
+      expect(dumper)
+        .to receive(:dump_to).with('path/to/file.sql', mode: 'a')
+
+      subject.dump_schema('foo', 'bar', 'path/to/file.sql', mode: 'a')
+    end
+  end
+
+  describe '.dump_table' do
+    it 'generates a dump of the table' do
+      dumper = double
+
+      expect(MultitenancyTools::TableDumper)
+        .to receive(:new)
+        .with('foo', 'bar', 'baz') { dumper }
+      expect(dumper)
+        .to receive(:dump_to).with('path/to/file.sql', mode: 'a')
+
+      subject.dump_table('foo', 'bar', 'baz', 'path/to/file.sql', mode: 'a')
+    end
+  end
 end

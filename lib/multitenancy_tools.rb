@@ -38,4 +38,25 @@ module MultitenancyTools
   def self.using(schema, connection = ActiveRecord::Base.connection, &block)
     SchemaSwitcher.new(schema, connection).run(&block)
   end
+
+  # Generates a SQL dump of the schema. Requires pg_dump.
+  #
+  # @see SchemaDumper
+  # @param database [String]
+  # @param schema [String]
+  # @param file [String]
+  def self.dump_schema(database, schema, file, **args)
+    SchemaDumper.new(database, schema).dump_to(file, **args)
+  end
+
+  # Generates a SQL dump of the table. Requires pg_dump.
+  #
+  # @see TableDumper
+  # @param database [String]
+  # @param schema [String]
+  # @param table [String]
+  # @param file [String]
+  def self.dump_table(database, schema, table, file, **args)
+    TableDumper.new(database, schema, table).dump_to(file, **args)
+  end
 end
