@@ -5,8 +5,11 @@
 [![Test Coverage][cc-cov-badge]][cc-cov-details]
 
 This Ruby gem is a collection of tools that can be used to handle multitenant
-Ruby/Rails apps. The currently only supported database is PostgreSQL and there
-is no plan to support other databases.
+Ruby/Rails apps. Like the name says, it is just a collection of tools and not
+an opinionated implementation and does not require a specific architecture.
+
+The currently only supported database is PostgreSQL and there is no plan to
+support other databases.
 
 The documentation is [available on RubyDoc.info][docs].
 
