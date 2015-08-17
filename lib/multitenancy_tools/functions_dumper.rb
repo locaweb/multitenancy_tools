@@ -22,7 +22,9 @@ module MultitenancyTools
     # @param mode [String] IO open mode
     def dump_to(file, mode: 'w')
       results = @connection.execute(<<-SQL)
-        SELECT pg_get_functiondef(f.oid) as definition
+        SELECT
+          trim(trailing e' \n' from pg_get_functiondef(f.oid)) || ';\n'
+          AS definition
         FROM pg_catalog.pg_proc f
         INNER JOIN pg_catalog.pg_namespace n ON (f.pronamespace = n.oid)
         WHERE n.nspname = #{@schema};
@@ -30,7 +32,7 @@ module MultitenancyTools
 
       File.open(file, mode) do |f|
         results.each do |result|
-          f.write result['definition'].strip + ";\n"
+          f.write result['definition']
         end
       end
     end
