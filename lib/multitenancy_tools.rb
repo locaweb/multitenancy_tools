@@ -6,6 +6,7 @@ require 'multitenancy_tools/schema_creator'
 require 'multitenancy_tools/table_dumper'
 require 'multitenancy_tools/schema_switcher'
 require 'multitenancy_tools/schema_destroyer'
+require 'multitenancy_tools/functions_dumper'
 
 module MultitenancyTools
   # Creates a new schema using the SQL file as template. This SQL file can be
