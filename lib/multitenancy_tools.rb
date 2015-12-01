@@ -8,6 +8,7 @@ require 'multitenancy_tools/schema_switcher'
 require 'multitenancy_tools/schema_destroyer'
 require 'multitenancy_tools/functions_dumper'
 require 'multitenancy_tools/schema_migrator'
+require 'multitenancy_tools/extensions_dumper'
 
 module MultitenancyTools
   # Creates a new schema using the SQL file as template. This SQL file can be
