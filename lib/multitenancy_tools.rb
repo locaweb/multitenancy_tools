@@ -62,4 +62,13 @@ module MultitenancyTools
   def self.dump_table(database, schema, table, file, **args)
     TableDumper.new(database, schema, table).dump_to(file, **args)
   end
+
+  # Generates a SQL dump of all extensions enabled on the database.
+  #
+  # @see ExtensionsDumper
+  # @param file [String]
+  # @param connection [ActiveRecord::ConnectionAdapters::PostgreSQLAdapter] connection adapter
+  def self.dump_extensions(file, connection = ActiveRecord::Base.connection, **args)
+    ExtensionsDumper.new(connection).dump_to(file, **args)
+  end
 end
