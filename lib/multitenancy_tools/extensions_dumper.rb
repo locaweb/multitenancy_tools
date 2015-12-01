@@ -11,7 +11,7 @@ module MultitenancyTools
       JOIN pg_namespace n ON (extnamespace = n.oid)
     SQL
 
-    CREATE_EXTENSION_SQL = "CREATE EXTENSION IF NOT EXITS '%s' WITH SCHEMA %s;\n".freeze
+    CREATE_EXTENSION_SQL = 'CREATE EXTENSION IF NOT EXISTS "%s" WITH SCHEMA %s;'.freeze
 
     # @param connection [ActiveRecord::ConnectionAdapters::PostgreSQLAdapter] connection adapter
     def initialize(connection = ActiveRecord::Base.connection)
@@ -33,7 +33,7 @@ module MultitenancyTools
           name = result.fetch('extname')
           schema = result.fetch('nspname')
 
-          f.write(format(CREATE_EXTENSION_SQL, name, schema))
+          f.puts(format(CREATE_EXTENSION_SQL, name, schema))
         end
       end
     end
