@@ -22,6 +22,8 @@ RSpec.describe MultitenancyTools::FunctionsDumper do
               RETURN i + 1;
           END;
       $$ LANGUAGE plpgsql;
+      -- this line creates some hstore functions that are C based
+      CREATE EXTENSION hstore WITH SCHEMA schema1;
     SQL
   end
 
@@ -50,6 +52,10 @@ RSpec.describe MultitenancyTools::FunctionsDumper do
     it 'does not include functions from other schemas' do
       expect(file).to_not match(/schema2/)
       expect(file).to_not match(/function_for_schema2/)
+    end
+
+    it 'does not include C functions' do
+      expect(file).to_not match(/hstore/)
     end
   end
 end
