@@ -9,6 +9,7 @@ module MultitenancyTools
   # * tablespace assigments
   # * ownership information
   # * any table data
+  # * extensions (CREATE EXTENSION)
   #
   # {SchemaDumper} is suitable to create SQL templates for {SchemaCreator}.
   #

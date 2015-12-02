@@ -70,4 +70,19 @@ RSpec.describe MultitenancyTools do
       subject.dump_table('foo', 'bar', 'baz', 'path/to/file.sql', mode: 'a')
     end
   end
+
+  describe '.dump_extensions' do
+    it 'generates a dump of all extensions' do
+      dumper = double
+
+      expect(MultitenancyTools::ExtensionsDumper)
+        .to receive(:new)
+        .with(ActiveRecord::Base.connection) { dumper }
+      expect(dumper)
+        .to receive(:dump_to)
+        .with('path/to/file.sql', mode: 'a')
+
+      subject.dump_extensions('path/to/file.sql', mode: 'a')
+    end
+  end
 end

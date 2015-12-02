@@ -8,6 +8,7 @@ require 'multitenancy_tools/schema_switcher'
 require 'multitenancy_tools/schema_destroyer'
 require 'multitenancy_tools/functions_dumper'
 require 'multitenancy_tools/schema_migrator'
+require 'multitenancy_tools/extensions_dumper'
 
 module MultitenancyTools
   # Creates a new schema using the SQL file as template. This SQL file can be
@@ -60,5 +61,14 @@ module MultitenancyTools
   # @param file [String]
   def self.dump_table(database, schema, table, file, **args)
     TableDumper.new(database, schema, table).dump_to(file, **args)
+  end
+
+  # Generates a SQL dump of all extensions enabled on the database.
+  #
+  # @see ExtensionsDumper
+  # @param file [String]
+  # @param connection [ActiveRecord::ConnectionAdapters::PostgreSQLAdapter] connection adapter
+  def self.dump_extensions(file, connection = ActiveRecord::Base.connection, **args)
+    ExtensionsDumper.new(connection).dump_to(file, **args)
   end
 end
