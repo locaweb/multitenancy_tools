@@ -7,8 +7,8 @@ module MultitenancyTools
   #   dumper.dump_to('path/to/file.sql')
   class ExtensionsDumper
     EXTENSION_SQL = <<-'SQL'.freeze
-      SELECT extname, nspname FROM pg_extension
-      JOIN pg_namespace n ON (extnamespace = n.oid)
+      SELECT extname, nspname FROM pg_catalog.pg_extension
+      JOIN pg_catalog.pg_namespace n ON (extnamespace = n.oid)
     SQL
 
     CREATE_EXTENSION_SQL = 'CREATE EXTENSION IF NOT EXISTS "%s" WITH SCHEMA %s;'.freeze
