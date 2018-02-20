@@ -20,10 +20,12 @@ module MultitenancyTools
     # @param database [String] database name
     # @param schema [String] schema name
     # @param table [String] table name
-    def initialize(database, schema, table)
+    def initialize(database, schema, table, options = {})
       @database = database
       @schema = schema
       @table = table
+      @host = options.fetch(:host, '')
+      @username = options.fetch(:username, '')
     end
 
     # Generates a dump an writes it into a file. Please see {IO.new} for open
@@ -42,7 +44,9 @@ module MultitenancyTools
         '--no-tablespaces',
         '--no-owner',
         '--inserts',
-        '--dbname', @database
+        '--dbname', @database,
+        '--host', @host,
+        '--username', @username
       )
 
       fail(PgDumpError, stderr) unless status.success?
