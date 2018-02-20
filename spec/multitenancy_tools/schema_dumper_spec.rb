@@ -107,5 +107,23 @@ RSpec.describe MultitenancyTools::SchemaDumper do
         subject.dump_to('dump.sql', mode: 'a')
       end
     end
+
+    context 'changing server host' do
+      it 'connects to a different host when host argument is provided' do
+        file = Tempfile.new('lalala')
+        expect do
+          described_class.new(Db.name, 'schema1', { host: 'another_host' }).dump_to(file)
+        end.to raise_error MultitenancyTools::PgDumpError, /could not translate host name/
+      end
+    end
+
+    context 'changing database username' do
+      it 'connects using a different user when username is provided' do
+        file = Tempfile.new('lalala')
+        expect do
+          described_class.new(Db.name, 'schema1', { username: 'richard' }).dump_to(file)
+        end.to raise_error MultitenancyTools::PgDumpError, /authentication failed for user/
+      end
+    end
   end
 end
