@@ -40,6 +40,13 @@ dumper = MultitenancyTools::SchemaDumper.new('database name', 'schema name')
 dumper.dump_to('path/to/file.sql')
 ```
 
+#### Dumping from a differente host and using a differente username
+```ruby
+options = { host: 'db-on-docker', username: 'non-root-user' }
+dumper = MultitenancyTools::SchemaDumper.new('database name', 'schema name', options)
+dupmer.dump_to('path/to/file.sql')
+```
+
 ### Dumping the content of a table to a SQL file
 
 Like `SchemaDumper`, this tool also requires `pg_dump` to be on the `PATH`:
@@ -47,6 +54,13 @@ Like `SchemaDumper`, this tool also requires `pg_dump` to be on the `PATH`:
 ```ruby
 dumper = MultitenancyTools::TableDumper.new('database name', 'schema name', 'table name')
 dumper.dump_to('path/to/file.sql')
+```
+
+#### Dumping from a differente host and using a differente username
+```ruby
+options = { host: 'db-on-docker', username: 'non-root-user' }
+dumper = MultitenancyTools::TableDumper.new('database name', 'schema name', 'table_name', options)
+dupmer.dump_to('path/to/file.sql')
 ```
 
 ### Creating a new PostgreSQL schema using a SQL file as template
