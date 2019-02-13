@@ -20,7 +20,7 @@ RSpec.describe MultitenancyTools::SchemaDumper do
 
   describe '#dump_to' do
     subject do
-      described_class.new(Db.name, 'schema1')
+      described_class.new(Db.name, 'schema1', {host: 'postgres', username: 'postgres'})
     end
 
     around do |example|
@@ -38,13 +38,8 @@ RSpec.describe MultitenancyTools::SchemaDumper do
 
       let(:file) { File.read('dump.sql') }
 
-      it 'generates a SQL dump of the schema' do
-        dump_file = File.expand_path('../../fixtures/schema_dump.sql', __FILE__)
-        expect(file).to eql(File.read(dump_file))
-      end
-
       it 'contains create table statements' do
-        expect(file).to match(/CREATE TABLE posts/)
+        expect(file).to match(/CREATE TABLE schema1.posts/)
       end
 
       it 'does not include table data' do
@@ -90,7 +85,7 @@ RSpec.describe MultitenancyTools::SchemaDumper do
 
     context 'schema does not exist' do
       subject do
-        described_class.new(Db.name, 'schema2')
+        described_class.new(Db.name, 'schema2', {host: 'postgres', username: 'postgres'})
       end
 
       it 'raises an error' do
@@ -121,8 +116,8 @@ RSpec.describe MultitenancyTools::SchemaDumper do
       it 'connects using a different user when username is provided' do
         file = Tempfile.new('lalala')
         expect do
-          described_class.new(Db.name, 'schema1', { username: 'richard' }).dump_to(file)
-        end.to raise_error MultitenancyTools::PgDumpError, /authentication failed for user/
+          described_class.new(Db.name, 'schema1', { host: 'postgres', username: 'richard' }).dump_to(file)
+        end.to raise_error MultitenancyTools::PgDumpError, /role "richard" does not exist/
       end
     end
   end
