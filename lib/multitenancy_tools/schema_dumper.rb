@@ -36,9 +36,13 @@ module MultitenancyTools
     # @param file [String] file path
     # @param mode [String] IO open mode
     def dump_to(file, mode: 'w')
-      stdout, stderr, status = Open3.capture3(
+      stdout, stderr, status = Dump.call(
+
+      )
+        Open3.capture3(
         'pg_dump',
         '--schema', @schema,
+        # Change this option into other class
         '--schema-only',
         '--no-privileges',
         '--no-tablespaces',

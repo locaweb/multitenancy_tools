@@ -39,6 +39,7 @@ module MultitenancyTools
       stdout, stderr, status = Open3.capture3(
         'pg_dump',
         '--table', "#{@schema}.#{@table}",
+        # Change this option into other class
         '--data-only',
         '--no-privileges',
         '--no-tablespaces',
