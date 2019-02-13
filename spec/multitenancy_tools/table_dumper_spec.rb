@@ -18,7 +18,10 @@ RSpec.describe MultitenancyTools::TableDumper do
 
   describe '#dump_to' do
     subject do
-      described_class.new(Db.name, 'schema1', 'posts', {host: 'postgres', username: 'postgres'})
+      described_class.new(Db.name,
+                          'schema1',
+                          'posts',
+                          { host: Db.host, username: Db.username })
     end
 
     around do |example|
@@ -83,7 +86,10 @@ RSpec.describe MultitenancyTools::TableDumper do
 
     context 'table does not exist' do
       subject do
-        described_class.new(Db.name, 'schema1', 'foos', {host:'postgres', username:'postgres'})
+        described_class.new(Db.name,
+                            'schema1',
+                            'foos',
+                            { host: Db.host, username: Db.username })
       end
 
       it 'raises an error' do
@@ -114,7 +120,7 @@ RSpec.describe MultitenancyTools::TableDumper do
       it 'connects using a different user when username is provided' do
         file = Tempfile.new('lalala')
         expect do
-          described_class.new(Db.name, 'schema1', 'posts', { host: 'postgres', username: 'richard' }).dump_to(file)
+          described_class.new(Db.name, 'schema1', 'posts', { host: Db.host, username: 'richard' }).dump_to(file)
         end.to raise_error MultitenancyTools::PgDumpError, /role "richard" does not exist/
       end
     end

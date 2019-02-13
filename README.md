@@ -56,7 +56,7 @@ dumper = MultitenancyTools::TableDumper.new('database name', 'schema name', 'tab
 dumper.dump_to('path/to/file.sql')
 ```
 
-#### Dumping from a differente host and using a differente username
+#### Dumping from a different host and using a different username
 ```ruby
 options = { host: 'db-on-docker', username: 'non-root-user' }
 dumper = MultitenancyTools::TableDumper.new('database name', 'schema name', 'table_name', options)
