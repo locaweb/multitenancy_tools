@@ -124,14 +124,5 @@ RSpec.describe MultitenancyTools::SchemaDumper do
         end.to raise_error MultitenancyTools::PgDumpError, /role "richard" does not exist/
       end
     end
-
-    context 'when not passing default options' do
-      it 'does not uses host in pg_dump' do
-      end
-
-      it 'does not uses username in pg_dump' do
-
-      end
-    end
   end
 end
