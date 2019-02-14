@@ -9,6 +9,7 @@ RSpec.describe MultitenancyTools::DumpCleaner do
 CREATE SCHEMA foo_bar;
 SET search_path = foo_bar;
 SET statement_timeout = 0;
+SELECT pg_catalog.set_config('search_path', '', false);
 SET lock_timeout = 0;
 CREATE TABLE schema.posts (
     id integer NOT NULL,

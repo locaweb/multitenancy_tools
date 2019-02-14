@@ -19,6 +19,7 @@ module MultitenancyTools
       @sql.gsub!(/^--(?:.*)\n+/, '')
       @sql.gsub!(/\n+/, "\n")
       clean_schema_names!
+      clean_catalog_overwrites!
       @sql
     end
 
@@ -35,6 +36,11 @@ module MultitenancyTools
       return if @schema_name.blank?
 
       @sql.gsub!(/#{@schema_name}\.(\w*)/, '\1')
+    end
+
+    # Removes system administrators configs overwrites
+    def clean_catalog_overwrites!
+      @sql.gsub!(/SELECT pg_catalog\.set_config.*;\n/, '')
     end
   end
 end
