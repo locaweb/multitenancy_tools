@@ -71,15 +71,49 @@ CREATE TABLE posts (
       expect(output).to_not match(/\n\n/)
     end
 
-    it 'removes schema names on table' do
-      output = described_class.new(sql, 'schema').clean
-      expect(output).to_not match(/schema\.posts/)
-    end
+    context 'when parsing schema names' do
+      it 'removes schema names on table' do
+        output = described_class.new(sql, 'schema').clean
+        expect(output).to_not match(/schema\.posts/)
+      end
 
-    context 'when no option is passed' do
-      it 'keeps the schema names' do
-        output = described_class.new(sql).clean
-        expect(output).to match(/schema\.posts/)
+      it 'preserves similar occurrences of keyword' do
+        sql = 'CREATE TABLE author.posts ( author VARCHAR )'
+
+        output = described_class.new(sql, 'author').clean
+
+        expect(output).to eq 'CREATE TABLE posts ( author VARCHAR )'
+      end
+
+      it 'preserves words that contains schema name as substring' do
+        sql = 'INSERT INTO author.posts VALUES ( "my_author. Hello" )'
+
+        output = described_class.new(sql, 'author').clean
+
+        expect(output).to eq 'INSERT INTO posts VALUES ( "my_author. Hello" )'
+      end
+
+      it 'preserves words that are not schema names' do
+        sql = 'INSERT INTO author.posts VALUES ( "my author. Hello" )'
+
+        output = described_class.new(sql, 'author').clean
+
+        expect(output).to eq 'INSERT INTO posts VALUES ( "my author. Hello" )'
+      end
+
+      it 'preserves words that have numbers after it' do
+        sql = 'INSERT INTO author.posts VALUES ( "my author.123Hello" )'
+
+        output = described_class.new(sql, 'author').clean
+
+        expect(output).to eq 'INSERT INTO posts VALUES ( "my author.123Hello" )'
+      end
+
+      context 'when no option is passed' do
+        it 'keeps the schema names' do
+          output = described_class.new(sql).clean
+          expect(output).to match(/schema\.posts/)
+        end
       end
     end
   end

@@ -35,7 +35,7 @@ module MultitenancyTools
     def clean_schema_names!
       return if @schema_name.blank?
 
-      @sql.gsub!(/#{@schema_name}\.(\w*)/, '\1')
+      @sql.gsub!(/\b#{@schema_name}\.([\S\D]*)/, '\1')
     end
 
     # Removes system administrators configs overwrites
