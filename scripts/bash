@@ -1,0 +1,37 @@
+#!/bin/bash
+
+set -e
+
+export POSTGRES_CONTAINER_NAME="postgres"
+
+# removed old pg containers running in your machine
+# searches for containers with name "postgres"
+remove_old_pg_container() {
+  container_id=$(docker ps -a --filter name="^$POSTGRES_CONTAINER_NAME$" --format {{.ID}})
+
+  if [ "$container_id" ]; then
+    docker stop $container_id
+    docker rm $container_id
+  fi
+}
+
+# destroys previous postgres containers and starts a new one
+# with fresh data. This prevents problems in running it with
+# a prepoulated volume containing old tables.
+setup_db_container() {
+  remove_old_pg_container
+
+  docker run --detach \
+    --publish 5432:5432 \
+    --hostname $POSTGRES_CONTAINER_NAME \
+    --name $POSTGRES_CONTAINER_NAME postgres:9.3
+}
+
+# ignores docker containers IDs outputs to stdout
+setup_db_container &>/dev/null
+
+# brings up main container with multitenancy tools environment
+docker run -it \
+  -v $PWD:/mtools \
+  --workdir /mtools --user $EUID \
+  --link $POSTGRES_CONTAINER_NAME mtools bash

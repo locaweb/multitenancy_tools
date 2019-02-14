@@ -86,6 +86,15 @@ this database *will be destroyed and recreated* on test execution.
 You can use `bin/console` to get an interactive prompt that will allow you to
 experiment.
 
+You can also run this project using docker in your local environment. Just
+ensure that you have:
+
+* Docker equal or greater than 18.09.1
+
+Then, build *Multitenancy Tools* image running `scripts/setup`
+
+In order to access it's console, run `scripts/bash`
+
 ## Releasing a new version
 
 If you are the maintainer of this project:
