@@ -10,7 +10,7 @@ CREATE SCHEMA foo_bar;
 SET search_path = foo_bar;
 SET statement_timeout = 0;
 SET lock_timeout = 0;
-CREATE TABLE posts (
+CREATE TABLE schema.posts (
     id integer NOT NULL,
     title text,
     body text
@@ -29,36 +29,57 @@ CREATE TABLE posts (
   end
 
   describe '#clean' do
-    subject { described_class.new(sql).clean }
+    it 'cleans generated sql' do
+      output = described_class.new(sql, 'schema').clean
 
-    it { expect(subject).to eql(expected_sql) }
+      expect(output).to eql(expected_sql)
+    end
 
     it 'does not change original string' do
-      expect { subject }.to_not change { sql }
+      expect { described_class.new(sql, 'schema').clean }
+        .to_not change { sql }
     end
 
     it 'removes create schema statements' do
-      expect(subject).to_not match(/CREATE SCHEMA/)
+      output = described_class.new(sql, 'schema').clean
+      expect(output).to_not match(/CREATE SCHEMA/)
     end
 
     it 'removes set search_path statements' do
-      expect(subject).to_not match(/SET search_path/)
+      output = described_class.new(sql, 'schema').clean
+      expect(output).to_not match(/SET search_path/)
     end
 
     it 'removes set statement_timeout' do
-      expect(subject).to_not match(/SET statement_timeout/)
+      output = described_class.new(sql, 'schema').clean
+      expect(output).to_not match(/SET statement_timeout/)
     end
 
     it 'removes set lock_timeout' do
-      expect(subject).to_not match(/SET lock_timeout/)
+      output = described_class.new(sql, 'schema').clean
+      expect(output).to_not match(/SET lock_timeout/)
     end
 
     it 'removes comments' do
-      expect(subject).to_not match(/--/)
+      output = described_class.new(sql, 'schema').clean
+      expect(output).to_not match(/--/)
     end
 
     it 'removes duplicate line breaks' do
-      expect(subject).to_not match(/\n\n/)
+      output = described_class.new(sql, 'schema').clean
+      expect(output).to_not match(/\n\n/)
+    end
+
+    it 'removes schema names on table' do
+      output = described_class.new(sql, 'schema').clean
+      expect(output).to_not match(/schema\.posts/)
+    end
+
+    context 'when no option is passed' do
+      it 'keeps the schema names' do
+        output = described_class.new(sql).clean
+        expect(output).to match(/schema\.posts/)
+      end
     end
   end
 end

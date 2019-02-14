@@ -46,7 +46,7 @@ module MultitenancyTools
       fail(PgDumpError, stderr) unless status.success?
 
       File.open(file, mode) do |f|
-        f.write DumpCleaner.new(stdout).clean
+        f.write DumpCleaner.new(stdout, @schema).clean
       end
     end
   end
