@@ -11,7 +11,7 @@ module MultitenancyTools
       end
 
       def dump
-        Open3.capture3(dump_args.join(' '))
+        Open3.capture3(dump_args.shelljoin)
       end
 
       private
@@ -27,9 +27,9 @@ module MultitenancyTools
           '--dbname', @database,
         ]
 
-        args << ["--host #{@host}"] if @host.present?
-        args << ["--username #{@user}"] if @user.present?
-        args
+        args << ['--host', @host] if @host.present?
+        args << ['--username', @user] if @user.present?
+        args.flatten
       end
     end
   end
