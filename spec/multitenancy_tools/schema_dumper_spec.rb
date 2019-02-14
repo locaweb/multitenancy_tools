@@ -41,7 +41,7 @@ RSpec.describe MultitenancyTools::SchemaDumper do
       let(:file) { File.read('dump.sql') }
 
       it 'contains create table statements' do
-        expect(file).to match(/CREATE TABLE schema1.posts/)
+        expect(file).to match(/CREATE TABLE posts/)
       end
 
       it 'does not include table data' do
