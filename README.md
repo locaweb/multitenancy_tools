@@ -40,6 +40,13 @@ dumper = MultitenancyTools::SchemaDumper.new('database name', 'schema name')
 dumper.dump_to('path/to/file.sql')
 ```
 
+#### Dumping from a different host and using a different username
+```ruby
+options = { host: 'db-on-docker', username: 'non-root-user' }
+dumper = MultitenancyTools::SchemaDumper.new('database name', 'schema name', options)
+dupmer.dump_to('path/to/file.sql')
+```
+
 ### Dumping the content of a table to a SQL file
 
 Like `SchemaDumper`, this tool also requires `pg_dump` to be on the `PATH`:
@@ -47,6 +54,13 @@ Like `SchemaDumper`, this tool also requires `pg_dump` to be on the `PATH`:
 ```ruby
 dumper = MultitenancyTools::TableDumper.new('database name', 'schema name', 'table name')
 dumper.dump_to('path/to/file.sql')
+```
+
+#### Dumping from a different host and using a different username
+```ruby
+options = { host: 'db-on-docker', username: 'non-root-user' }
+dumper = MultitenancyTools::TableDumper.new('database name', 'schema name', 'table_name', options)
+dupmer.dump_to('path/to/file.sql')
 ```
 
 ### Creating a new PostgreSQL schema using a SQL file as template
@@ -71,6 +85,15 @@ this database *will be destroyed and recreated* on test execution.
 
 You can use `bin/console` to get an interactive prompt that will allow you to
 experiment.
+
+You can also run this project using docker in your local environment. Just
+ensure that you have:
+
+* Docker equal or greater than 18.09.1
+
+Then, build *Multitenancy Tools* image running `scripts/setup`
+
+In order to access it's console, run `scripts/bash`
 
 ## Releasing a new version
 

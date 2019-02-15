@@ -18,7 +18,10 @@ RSpec.describe MultitenancyTools::TableDumper do
 
   describe '#dump_to' do
     subject do
-      described_class.new(Db.name, 'schema1', 'posts')
+      described_class.new(Db.name,
+                          'schema1',
+                          'posts',
+                          { host: Db.host, username: Db.username })
     end
 
     around do |example|
@@ -35,11 +38,6 @@ RSpec.describe MultitenancyTools::TableDumper do
       end
 
       let(:file) { File.read('dump.sql') }
-
-      it 'generates a SQL dump of the schema' do
-        dump_file = File.expand_path('../../fixtures/table_dump.sql', __FILE__)
-        expect(file).to eql(File.read(dump_file))
-      end
 
       it 'includes table data' do
         expect(file).to match(/INSERT INTO/)
@@ -88,7 +86,10 @@ RSpec.describe MultitenancyTools::TableDumper do
 
     context 'table does not exist' do
       subject do
-        described_class.new(Db.name, 'schema1', 'foos')
+        described_class.new(Db.name,
+                            'schema1',
+                            'foos',
+                            { host: Db.host, username: Db.username })
       end
 
       it 'raises an error' do

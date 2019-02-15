@@ -20,10 +20,12 @@ module MultitenancyTools
     # @param database [String] database name
     # @param schema [String] schema name
     # @param table [String] table name
-    def initialize(database, schema, table)
+    def initialize(database, schema, table, options = {})
       @database = database
       @schema = schema
       @table = table
+      @host = options.fetch(:host, '')
+      @username = options.fetch(:username, '')
     end
 
     # Generates a dump an writes it into a file. Please see {IO.new} for open
@@ -34,21 +36,18 @@ module MultitenancyTools
     # @param file [String] file path
     # @param mode [String] IO open mode
     def dump_to(file, mode: 'w')
-      stdout, stderr, status = Open3.capture3(
-        'pg_dump',
-        '--table', "#{@schema}.#{@table}",
-        '--data-only',
-        '--no-privileges',
-        '--no-tablespaces',
-        '--no-owner',
-        '--inserts',
-        '--dbname', @database
-      )
+      stdout, stderr, status = Dump::DataOnly.new(
+        table: @table,
+        schema: @schema,
+        database: @database,
+        host: @host,
+        username: @username
+      ).dump
 
       fail(PgDumpError, stderr) unless status.success?
 
       File.open(file, mode) do |f|
-        f.write DumpCleaner.new(stdout).clean
+        f.write DumpCleaner.new(stdout, @schema).clean
       end
     end
   end

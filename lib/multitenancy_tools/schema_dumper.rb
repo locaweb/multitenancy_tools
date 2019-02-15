@@ -21,9 +21,11 @@ module MultitenancyTools
   class SchemaDumper
     # @param database [String] database name
     # @param schema [String] schema name
-    def initialize(database, schema)
+    def initialize(database, schema, options = {})
       @database = database
       @schema = schema
+      @host = options.fetch(:host, '')
+      @username = options.fetch(:username, '')
     end
 
     # Generates a dump an writes it into a file. Please see {IO.new} for open
@@ -34,20 +36,17 @@ module MultitenancyTools
     # @param file [String] file path
     # @param mode [String] IO open mode
     def dump_to(file, mode: 'w')
-      stdout, stderr, status = Open3.capture3(
-        'pg_dump',
-        '--schema', @schema,
-        '--schema-only',
-        '--no-privileges',
-        '--no-tablespaces',
-        '--no-owner',
-        '--dbname', @database
-      )
+      stdout, stderr, status = Dump::SchemaOnly.new(
+        schema: @schema,
+        host: @host,
+        username: @username,
+        database: @database
+      ).dump
 
       fail(PgDumpError, stderr) unless status.success?
 
       File.open(file, mode) do |f|
-        f.write DumpCleaner.new(stdout).clean
+        f.write DumpCleaner.new(stdout, @schema).clean
       end
     end
   end

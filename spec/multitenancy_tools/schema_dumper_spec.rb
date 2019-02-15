@@ -20,7 +20,9 @@ RSpec.describe MultitenancyTools::SchemaDumper do
 
   describe '#dump_to' do
     subject do
-      described_class.new(Db.name, 'schema1')
+      described_class.new(Db.name,
+                          'schema1',
+                          { host: Db.host, username: Db.username })
     end
 
     around do |example|
@@ -37,11 +39,6 @@ RSpec.describe MultitenancyTools::SchemaDumper do
       end
 
       let(:file) { File.read('dump.sql') }
-
-      it 'generates a SQL dump of the schema' do
-        dump_file = File.expand_path('../../fixtures/schema_dump.sql', __FILE__)
-        expect(file).to eql(File.read(dump_file))
-      end
 
       it 'contains create table statements' do
         expect(file).to match(/CREATE TABLE posts/)
@@ -90,7 +87,9 @@ RSpec.describe MultitenancyTools::SchemaDumper do
 
     context 'schema does not exist' do
       subject do
-        described_class.new(Db.name, 'schema2')
+        described_class.new(Db.name,
+                            'schema2',
+                            { host: Db.host, username: Db.username })
       end
 
       it 'raises an error' do
@@ -105,6 +104,24 @@ RSpec.describe MultitenancyTools::SchemaDumper do
       it 'opens the file using the passed IO mode' do
         expect(File).to receive(:open).with(kind_of(String), 'a')
         subject.dump_to('dump.sql', mode: 'a')
+      end
+    end
+
+    context 'changing server host' do
+      it 'connects to a different host when host argument is provided' do
+        file = Tempfile.new('lalala')
+        expect do
+          described_class.new(Db.name, 'schema1', { host: 'another_host' }).dump_to(file)
+        end.to raise_error MultitenancyTools::PgDumpError, /could not translate host name/
+      end
+    end
+
+    context 'changing database username' do
+      it 'connects using a different user when username is provided' do
+        file = Tempfile.new('lalala')
+        expect do
+          described_class.new(Db.name, 'schema1', { host: Db.host, username: 'richard' }).dump_to(file)
+        end.to raise_error MultitenancyTools::PgDumpError, /role "richard" does not exist/
       end
     end
   end
