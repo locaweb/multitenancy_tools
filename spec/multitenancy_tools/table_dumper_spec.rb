@@ -96,7 +96,7 @@ RSpec.describe MultitenancyTools::TableDumper do
         expect do
           subject.dump_to('dump.sql')
         end.to raise_error(MultitenancyTools::PgDumpError,
-                           /No matching tables were found/)
+                           /No matching tables were found/i)
       end
     end
 

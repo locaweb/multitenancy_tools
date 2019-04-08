@@ -96,7 +96,7 @@ RSpec.describe MultitenancyTools::SchemaDumper do
         expect do
           subject.dump_to('dump.sql')
         end.to raise_error(MultitenancyTools::PgDumpError,
-                           /No matching schemas were found/)
+                           /No matching schemas were found/i)
       end
     end
 

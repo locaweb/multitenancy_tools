@@ -1,11 +1,19 @@
 language: ruby
-rvm:
-  - 2.1.6
-  - 2.2.2
-addons:
-  postgresql: "9.3"
-before_install: gem install bundler -v 1.10.5
-before_script:
-  - cp spec/database.yml.travis spec/database.yml
+
+matrix:
+  include:
+    - rvm: 2.3
+      addons:
+        postgresql: "9.3"
+    - rvm: 2.4
+      addons:
+        postgresql: "9.3"
+    - rvm: 2.5
+      addons:
+        postgresql: "9.3"
+    - rvm: 2.6
+      addons:
+        postgresql: "9.3"
+
 script:
-  - bundle exec rake spec
+  - ./travis/run.sh
