@@ -1,4 +1,4 @@
-FROM ruby:2.0
+FROM ruby:2.5
 
 ARG uid
 
